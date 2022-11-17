@@ -1,0 +1,145 @@
+import cv2
+import os
+import math
+import numpy as np
+import mediapipe as mp
+
+
+capture = cv2.VideoCapture(1)
+imgSize = 300
+
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_hands = mp.solutions.hands
+
+hands = mp_hands.Hands(
+    model_complexity=0,
+    min_detection_confidence=0.9,
+    min_tracking_confidence=0.9)
+
+dirname = input("Enter Class Name: ").upper()
+path = os.path.join("data", dirname)
+os.makedirs(path)
+imgCount = 1
+
+while True:
+    success, frame = capture.read()
+    frame = cv2.flip(frame, 1)
+    frame = cv2.resize(frame,(0,0), fx=0.65,fy=0.65, interpolation = cv2.INTER_CUBIC)
+    img_croped = frame.copy()
+    img_height, img_width, _ = frame.shape
+    
+    if not success:
+        continue
+
+
+    ############ Logic Started ################
+    
+    frame.flags.writeable = False
+    img_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = hands.process(img_RGB)                  # Takes RGB
+    
+    
+    img_RGB.flags.writeable = True
+    img_BGR = cv2.cvtColor(img_RGB, cv2.COLOR_RGB2BGR)
+    
+    
+    
+    if results.multi_hand_landmarks:
+        for hand_landmarks in results.multi_hand_landmarks:
+            
+            # Drowing BoundingBox
+            x_pos = []
+            y_pos = []
+            
+            for i in mp_hands.HandLandmark:
+                # Finding x & y Landmarks
+                x = hand_landmarks.landmark[i.value].x * img_width
+                y = hand_landmarks.landmark[i.value].y * img_height
+                
+                # Apending Landmarks into Seperate List
+                x_pos.append(x)
+                y_pos.append(y)
+
+                offset = 25
+                # min-x
+                x_min = int(min(x_pos)) - offset
+                x_max = int(max(x_pos)) + offset
+                
+                # min-y
+                y_min = int(min(y_pos)) - offset
+                y_max = int(max(y_pos)) + offset
+                
+            start_pos= (x_min, y_min)
+            end_pos = (x_max, y_max)
+            color = (255, 0, 0)
+            thikness = 2
+                
+            center_x = int((x_max + x_min)/2)
+            center_y = int((y_max + y_min)/2)
+            halfofimg = int(imgSize/2)
+            
+            
+            img_BGR = cv2.rectangle(img_BGR, start_pos, end_pos, color, thikness)
+            img_croped = img_BGR[y_min + thikness : y_max - thikness, x_min +thikness : x_max - thikness]
+            
+            # Resizing Hand image
+            img_final = np.zeros([imgSize,imgSize,3],dtype=np.uint8)
+            img_final.fill(255)
+            
+            h = img_croped.shape[0]
+            w = img_croped.shape[1]
+            
+            aspectRatio = h / w
+            try:
+                if aspectRatio > 1:
+                    k = imgSize / h
+                    wCal = math.ceil(k * w)
+                    imgResize = cv2.resize(img_croped, (wCal, imgSize))
+                    imgResizeShape = imgResize.shape
+                    wGap = math.ceil((imgSize - wCal) / 2)
+                    img_final[:, wGap : wGap + wCal] = imgResize
+                    
+                
+                elif aspectRatio < 1:
+                    k = imgSize / w
+                    hCal = math.ceil(k * h)
+                    imgResize = cv2.resize(img_croped, (imgSize, hCal))
+                    imgResizeShape = imgResize.shape
+                    hGap = math.ceil((imgSize - hCal) / 2)
+                    img_final[hGap : hGap + hCal, :] = imgResize
+                    
+            except:
+                pass
+            
+            img_final = cv2.cvtColor(img_final, cv2.COLOR_BGR2GRAY)
+            img_flatten = img_final.flatten()
+            img_array = np.array(img_flatten)
+            img_array = np.expand_dims(img_array, axis=0)
+            img_normal = img_array / 255
+            
+
+            cv2.imshow("Croped Image", img_final)
+    cv2.imshow("Main Frame", img_BGR)
+
+    if cv2.waitKey(1) == ord('s'):
+        cv2.imwrite(f"{path}/{imgCount}.jpg", img_final)
+        if imgCount == 5:
+            continue
+        print(imgCount)
+        imgCount += 1
+        
+    elif cv2.waitKey(1) == 27:
+        break
+
+
+capture.release()
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+

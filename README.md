@@ -34,4 +34,3 @@ The project aims to build a machine learning model that will be able to classify
     - Akash Murmu
     - Samrat Biswas
 
-Edited at 11:43 P.M.
