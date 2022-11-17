@@ -129,7 +129,7 @@ while True:
         print(imgCount)
         imgCount += 1
         
-    elif cv2.waitKey(1) == 27:
+    elif cv2.waitKey(1) == ord('c'):
         break
 
 

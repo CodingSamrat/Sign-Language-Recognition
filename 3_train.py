@@ -19,18 +19,13 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.15)
 x_train = x_train / 255         
 x_test = x_test / 255           
 
-# Storing Test Dataset (Optional)
-df_x = pd.DataFrame(x_test)
-df_y = pd.DataFrame(y_test)
-df_x.to_csv('test_features.csv',  index=False)
-df_y.to_csv('test_labels.csv',  index=False)
 
 
 # Creating Brain
 model = keras.Sequential([
     keras.layers.Dense(100, input_shape=(4096,), activation='relu'),
     keras.layers.Dense(50, activation='relu'),
-    keras.layers.Dense(35, activation='softmax')
+    keras.layers.Dense(24, activation='softmax')
 ])
 
 # Compiling Model
