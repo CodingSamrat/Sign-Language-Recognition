@@ -119,8 +119,12 @@ while True:
             img_normal = img_array / 255
             
 
-            cv2.imshow("Croped Image", img_final)
-    cv2.imshow("Main Frame", img_BGR)
+            cropped_window = "Cropped Image"
+            cv2.imshow(cropped_window, img_final)
+            cv2.setWindowProperty(cropped_window, cv2.WND_PROP_TOPMOST, 1)
+    main_window = "Main Frame"
+    cv2.imshow(main_window, img_BGR)
+    cv2.setWindowProperty(main_window, cv2.WND_PROP_TOPMOST, 1)
 
     if cv2.waitKey(1) == ord('s'):
         cv2.imwrite(f"{path}/{imgCount}.jpg", img_final)
