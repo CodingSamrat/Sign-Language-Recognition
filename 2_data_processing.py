@@ -37,7 +37,7 @@ def Image2CSV(_path, _columns, _imgSize):
     labels = []
 
     for dir in os.listdir(_path):
-        for img in os.listdir(f"{_path}/{dir}"):
+        for img in tqdm(os.listdir(f"{_path}/{dir}")):
             img = cv2.imread(f"{_path}/{dir}/{img}")                        # Reading Image
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)                     # Converting Image from RGB to Gray Scale (1 Channel)
             img = cv2.resize(img, (_imgSize, _imgSize))                     # Resizing Image to (64 X 64)

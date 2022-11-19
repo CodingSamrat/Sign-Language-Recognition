@@ -1,6 +1,6 @@
-/data
-# /model
 
 
-# *.csv
+
+*.h5
+*.csv
 delete.py
