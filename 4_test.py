@@ -97,8 +97,8 @@ while True:
             # Resizing Hand image
             img_bg = np.ones([imgSize,imgSize,3],dtype=np.uint8) * 255
 
-            h = img_croped.shape[0]
-            w = img_croped.shape[1]
+            h = (y_max - thikness) - (y_min + thikness)
+            w = (x_max - thikness) - (x_min + thikness)
             
             aspectRatio = h / w
             try:
@@ -135,13 +135,17 @@ while True:
             
             
             print(y_predicted_labels)
-            cv2.imshow("Croped Image", img_bg)
+            cropped_window = "Cropped Image"
+            cv2.imshow(cropped_window, img_bg)
+            cv2.setWindowProperty(cropped_window, cv2.WND_PROP_TOPMOST, 1)
             # cv2.imshow("Final Image", final_img)
             
 
     ############### Logic End #################
     
-    cv2.imshow("Main Frame", img_BGR)
+    main_window = "Main Frame"
+    cv2.imshow(main_window, img_BGR)
+    cv2.setWindowProperty(main_window, cv2.WND_PROP_TOPMOST, 1)
 
     if cv2.waitKey(1) == ord('c'):
         break

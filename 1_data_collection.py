@@ -87,8 +87,8 @@ while True:
             img_final = np.zeros([imgSize,imgSize,3],dtype=np.uint8)
             img_final.fill(255)
             
-            h = img_croped.shape[0]
-            w = img_croped.shape[1]
+            h = (y_max - thikness) - (y_min + thikness)
+            w = (x_max - thikness) - (x_min + thikness)
             
             aspectRatio = h / w
             try:
