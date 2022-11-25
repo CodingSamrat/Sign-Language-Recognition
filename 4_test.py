@@ -8,7 +8,7 @@ from keras.models import load_model
 # Loading Model
 model = load_model('model/model-1.h5')
 
-capture = cv2.VideoCapture(1)
+capture = cv2.VideoCapture(0)
 imgSize = 300
 imgTestSize = 64
 
@@ -140,6 +140,11 @@ while True:
                 print(letters[y_predicted_labels])
             except:
                 pass 
+
+            cropped_window = "Cropped Image"
+            cv2.imshow(cropped_window, img_bg)
+            cv2.setWindowProperty(cropped_window, cv2.WND_PROP_TOPMOST, 1)
+
             
             
     ############### Logic End #################
