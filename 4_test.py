@@ -4,7 +4,6 @@ import math
 import numpy as np
 import mediapipe as mp
 from keras.models import load_model
-from keras import models
 
 # Loading Model
 model = load_model('model/model-1.h5')
@@ -133,14 +132,16 @@ while True:
             y_predicted_labels = np.argmax(y_predicted[0])
             
             
-            
-            print(y_predicted_labels)
-            cropped_window = "Cropped Image"
-            cv2.imshow(cropped_window, img_bg)
-            cv2.setWindowProperty(cropped_window, cv2.WND_PROP_TOPMOST, 1)
+            letters = ["A","B","C"]
+
             # cv2.imshow("Final Image", final_img)
             
-
+            try:
+                print(letters[y_predicted_labels])
+            except:
+                pass 
+            
+            
     ############### Logic End #################
     
     main_window = "Main Frame"
