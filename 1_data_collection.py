@@ -4,7 +4,6 @@ import math
 import numpy as np
 import mediapipe as mp
 
-
 capture = cv2.VideoCapture(1)
 imgSize = 300
 
@@ -18,9 +17,10 @@ hands = mp_hands.Hands(
     min_tracking_confidence=0.9)
 
 dirname = input("Enter Class Name: ").upper()
-path = os.path.join("data", dirname)
+path = os.path.join("data_2", dirname)
 os.makedirs(path)
 imgCount = 1
+
 
 while True:
     success, frame = capture.read()
@@ -128,7 +128,7 @@ while True:
 
     if cv2.waitKey(1) == ord('s'):
         cv2.imwrite(f"{path}/{imgCount}.jpg", img_final)
-        if imgCount == 5:
+        if imgCount == 10000:
             continue
         print(imgCount)
         imgCount += 1
