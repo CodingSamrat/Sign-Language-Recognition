@@ -7,7 +7,7 @@ from keras.models import load_model
 # Loading Model
 model = load_model('model/model-1.h5')
 
-capture = cv2.VideoCapture(1)
+capture = cv2.VideoCapture(0)
 imgSize = 300
 imgTestSize = 64
 
@@ -41,13 +41,14 @@ while True:
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
 
-            # Draw Landmarks & Skeleton
+            #: Draw Landmarks & Skeleton
             # mp_drawing.draw_landmarks(
             #     img_BGR,
             #     hand_landmarks,
             #     mp_hands.HAND_CONNECTIONS,
             #     mp_drawing_styles.get_default_hand_landmarks_style(),
-            #     mp_drawing_styles.get_default_hand_connections_style())
+            #     mp_drawing_styles.get_default_hand_connections_style()
+            # )
 
             # Drawing BoundingBox
             x_pos = []

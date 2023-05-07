@@ -4,7 +4,7 @@ import math
 import numpy as np
 import mediapipe as mp
 
-capture = cv2.VideoCapture(1)
+capture = cv2.VideoCapture(0)
 imgSize = 300
 
 mp_drawing = mp.solutions.drawing_utils
