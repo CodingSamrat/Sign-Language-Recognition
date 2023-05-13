@@ -67,9 +67,9 @@ def get_args():
 
     #: Record mode
     parser.add_argument(
-        "--record_mode",
+        "--mode",
         type=bool,
-        default=False,
+        default=0,
         help="Is it in record mode or in Normal mode"
     )
 

@@ -1,26 +1,31 @@
 import copy
 import csv
-from collections import Counter
-from collections import deque
+import os
 
 import cv2 as cv
 import mediapipe as mp
-import numpy as np
+
+from dotenv import load_dotenv
 
 from utils import get_args
 from utils import CvFpsCalc
+from utils import get_result_image
+from utils import get_mode
 
 from utils import draw_landmarks
 from utils import draw_bounding_rect
-from utils import draw_info_text
+from utils import draw_hand_label
+from utils import show_info
 from utils import show_result
-from utils import get_result_image
 
 from utils import calc_bounding_rect
 from utils import calc_landmark_list
 from utils import pre_process_landmark
+from utils import log_keypoints
 
 from model import KeyPointClassifier
+
+load_dotenv()
 
 
 def main():
@@ -41,7 +46,8 @@ def main():
 
     #: Drawing Rectangle
     USE_BRECT = args.use_brect
-    RECORD_MODE = args.record_mode
+    MODE = args.mode
+    DEBUG = int(os.environ.get("DEBUG", "0")) == 1
 
     #: -
     #: Capturing image
@@ -74,21 +80,18 @@ def main():
     cv_fps = CvFpsCalc(buffer_len=10)
 
     #: -
-    #: Coordinate history or Finger gesture history
-    history_length = 16
-    finger_gesture_history = deque(maxlen=history_length)
-
-    #: -
     #: Main Loop Start Here...
     while True:
         #: FPS of open cv frame or window
         fps = cv_fps.get()
 
+        #: -
         #: Setup Quit key for program
         key = cv.waitKey(10)
         if key == 27:   # ESC key
             break
 
+        #: -
         #: Camera capture
         ret, image = cap.read()
         if not ret:
@@ -106,6 +109,13 @@ def main():
         results = hands.process(image)  #: Hand's landmarks
         image.flags.writeable = True
 
+        #: -
+        #: DEBUG - Showing Debug info
+        if DEBUG:
+            MODE = get_mode(key, MODE)
+            debug_image = show_info(debug_image, fps, MODE)
+
+        #: -
         #: Start Detection
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
@@ -121,23 +131,27 @@ def main():
                 pre_processed_landmark_list = pre_process_landmark(landmark_list)
 
                 #: -
-                #: Hand sign classification
-                hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
-                hand_sign_text = keypoint_classifier_labels[hand_sign_id]
-                # print(hand_sign_text)
-                result_image = show_result(result_image, handedness, hand_sign_text)
+                #: Checking if in Prediction Mode or in Logging Mode
+                #: If Prediction Mode it will predict the hand gesture
+                #: If in Logging Mode it will Log key-points or landmarks to the csv file
+
+                if MODE == 0:  #: Prediction Mode / Normal mode
+                    #: Hand sign classification
+                    hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
+                    hand_sign_text = keypoint_classifier_labels[hand_sign_id]
+
+                    #: Showing Result
+                    result_image = show_result(result_image, handedness, hand_sign_text)
+
+                elif MODE == 1:  #: Logging Mode
+                    log_keypoints(key, pre_processed_landmark_list)
+
 
                 #: -
                 #: Drawing debug info
-                debug_image = draw_bounding_rect(use_brect, debug_image, brect)
+                debug_image = draw_bounding_rect(debug_image, use_brect, brect)
                 debug_image = draw_landmarks(debug_image, landmark_list)
-                debug_image = draw_info_text(
-                    debug_image,
-                    brect,
-                    handedness,
-                    hand_sign_text
-                    # "Demo"
-                )
+                debug_image = draw_hand_label(debug_image, brect, handedness)
 
         cv.imshow("Left", result_image)
 

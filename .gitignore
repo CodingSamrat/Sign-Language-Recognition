@@ -5,3 +5,6 @@ __pycache__
 /data
 /static
 delete.py
+
+.env
+model/keypoint.csv
