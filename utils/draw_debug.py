@@ -1,5 +1,5 @@
 import copy
-
+import numpy as np
 import cv2 as cv
 
 
@@ -60,6 +60,28 @@ def draw_info_text(image, brect, handedness, hand_sign_text):
     return image
 
 
+def get_result_image():
+    """
+
+    :param image:
+    :return:
+    """
+    image = np.ones([200, 400, 3], dtype=np.uint8) * 255
+
+    #: Heading
+    cv.putText(image, "Left", (10, 30),
+                cv.FONT_HERSHEY_SIMPLEX,
+        0.6, (0, 0, 0), 1, cv.LINE_AA
+    )
+
+    cv.putText(image, "Right", (210, 30),
+        cv.FONT_HERSHEY_SIMPLEX,
+        0.6, (0, 0, 0), 1, cv.LINE_AA
+    )
+
+    return image
+
+
 def show_result(image, handedness, hand_sign_text):
     """
     :param hand_sign_text: Detected sign
@@ -77,37 +99,13 @@ def show_result(image, handedness, hand_sign_text):
     #: Position of text
     position = (00, 00)
 
-    #: Heading
-    cv.putText(
-        image,
-        "Left",
-        (10, 30),
-        cv.FONT_HERSHEY_SIMPLEX,
-        0.6,
-        (0, 0, 0),
-        1,
-        cv.LINE_AA
-    )
-    cv.putText(
-        image,
-        "Right",
-        (210, 30),
-        cv.FONT_HERSHEY_SIMPLEX,
-        0.6,
-        (0, 0, 0),
-        1,
-        cv.LINE_AA
-    )
-
-
     #: Check if hand sign is empty or not
+    #: Checking for right hand or left
     if hand_sign_text != "":
-
-        #: Checking for right hand
         if hand == "Right":
-            position = (10, 60)
-        elif hand == "Left":
             position = (210, 60)
+        elif hand == "Left":
+            position = (10, 60)
 
         cv.putText(
             image,

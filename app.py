@@ -14,6 +14,7 @@ from utils import draw_landmarks
 from utils import draw_bounding_rect
 from utils import draw_info_text
 from utils import show_result
+from utils import get_result_image
 
 from utils import calc_bounding_rect
 from utils import calc_landmark_list
@@ -96,8 +97,7 @@ def main():
         #: Flip Image for mirror display
         image = cv.flip(image, 1)
         debug_image = copy.deepcopy(image)
-        result_image = np.ones([200, 400, 3], dtype=np.uint8) * 255
-        # result_image_right = np.ones([200, 200, 3], dtype=np.uint8) * 255
+        result_image = get_result_image()
 
         #: Converting to RBG from BGR
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
