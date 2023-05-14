@@ -1,17 +1,23 @@
 import csv
 import cv2 as cv
+import json
 
 
-def log_keypoints(key, landmark_list):
+def log_keypoints(key, landmark_list, data_limit=1000):
     """
 
     :param key: Keyboard key (latter)
     :param landmark_list: Preprocessed landmark list
+    :param data_limit: How many row need for each sign
     :return: None
     """
-
-    csv_path = 'model/keypoint.csv'
+    counter_file = "model/counter.json"
+    counter_obj = {}
+    csv_path = "model/keypoint.csv"
     index = -1
+
+    with open(counter_file, "r") as cf:
+        counter_obj = dict(json.load(cf))
 
     #: Escaping 'J/j'
     if key == 106 or key == 74:
@@ -34,11 +40,30 @@ def log_keypoints(key, landmark_list):
             if key > 106:   # j
                 index -= 1
 
-        print(index)
+        #: Counting limit
+        if str(index) in counter_obj.keys():
+            counter_obj[str(index)] += 1
+        else:
+            counter_obj[str(index)] = 1
 
+        if counter_obj[str(index)] > data_limit:  #: Limit of capturing image
+            print(f"Dataset limit reached for {chr(key).upper()} [{counter_obj[str(index)]-1}/{data_limit}]")
+            return
+
+        #: -
+        #: Writing dataset
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([index, *landmark_list])
+
+
+        #: -
+        #: Writing counter
+        with open(counter_file, "w") as cf:
+            counter_obj_writable = json.dumps(counter_obj, indent=4)
+            cf.write(counter_obj_writable)
+
+        print(f"{chr(key).upper()} => {counter_obj[str(index)]}/{data_limit}")
 
     return
 
