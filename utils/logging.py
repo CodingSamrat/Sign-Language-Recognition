@@ -12,19 +12,33 @@ def log_keypoints(key, landmark_list):
 
     csv_path = 'model/keypoint.csv'
     index = -1
-    if 65 <= key <= 90 or 97 <= key <= 122:
+
+    #: Escaping 'J/j'
+    if key == 106 or key == 74:
+        return
+
+    if 65 <= key <= 89 or 97 <= key <= 121:  # A-Z / a-z
 
         #: Calculating index of letters
-        if 65 <= key <= 90:
+        if 65 <= key <= 90:  # Capital letters
             index = key - 65
-        elif 97 <= key <= 122:
+
+            #: Subtracting index by 1 after 'J'
+            if key > 74:   # J
+                index -= 1
+
+        elif 97 <= key <= 122:  # Small letters
             index = key - 97
+
+            #: Subtracting index by 1 after 'j'
+            if key > 106:   # j
+                index -= 1
 
         print(index)
 
-        with open(csv_path, 'a', newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow([index, *landmark_list])
+        # with open(csv_path, 'a', newline="") as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow([index, *landmark_list])
 
     return
 
