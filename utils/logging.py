@@ -36,9 +36,9 @@ def log_keypoints(key, landmark_list):
 
         print(index)
 
-        # with open(csv_path, 'a', newline="") as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow([index, *landmark_list])
+        with open(csv_path, 'a', newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow([index, *landmark_list])
 
     return
 
