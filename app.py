@@ -48,13 +48,13 @@ def main():
     USE_BRECT = args.use_brect
     MODE = args.mode
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
-
+    print("start")
     #: -
     #: Capturing image
     cap = cv.VideoCapture(CAP_DEVICE)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, CAP_WIDTH)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, CAP_HEIGHT)
-
+    print(1)
     #: -
     #: Setup hands
     mp_hands = mp.solutions.hands
@@ -64,7 +64,7 @@ def main():
         min_detection_confidence=MIN_DETECTION_CONFIDENCE,
         min_tracking_confidence=MIN_TRACKING_CONFIDENCE
     )
-
+    print(2)
     #: -
     #: Load Model
     keypoint_classifier = KeyPointClassifier()
@@ -137,15 +137,14 @@ def main():
 
                 if MODE == 0:  #: Prediction Mode / Normal mode
                     #: Hand sign classification
-                    hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
-                    hand_sign_text = keypoint_classifier_labels[hand_sign_id]
+                    # hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
+                    # hand_sign_text = keypoint_classifier_labels[hand_sign_id]
 
                     #: Showing Result
-                    result_image = show_result(result_image, handedness, hand_sign_text)
+                    result_image = show_result(result_image, handedness, "hand_sign_text")
 
                 elif MODE == 1:  #: Logging Mode
                     log_keypoints(key, pre_processed_landmark_list)
-
 
                 #: -
                 #: Drawing debug info

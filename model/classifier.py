@@ -3,22 +3,31 @@ import tensorflow as tf
 
 
 class KeyPointClassifier(object):
-    def __init__(self, model_path='model/aslr_model.tflite', num_threads=1):
+    def __init__(
+        self,
+        model_path='model/aslr_model.tflite',
+        num_threads=1,
+    ):
         #: Initializing tensor interpreter
-        self.interpreter = tf.lite.Interpreter(model_path=model_path, num_threads=num_threads)
+        self.interpreter = tf.lite.Interpreter(
+            model_path=model_path,
+            num_threads=num_threads
+        )
         self.interpreter.allocate_tensors()
 
         #: Input Output details
         self.input_details = self.interpreter.get_input_details()
         self.output_details = self.interpreter.get_output_details()
-        print(self.input_details)
-        print(self.output_details)
 
     def __call__(self, landmark_list):
+
         input_details_tensor_index = self.input_details[0]['index']
 
         #: Feeding landmarks to the tensor interpreter
-        self.interpreter.set_tensor(input_details_tensor_index, np.array([landmark_list], dtype=np.float32))
+        self.interpreter.set_tensor(
+            input_details_tensor_index,
+            np.array([landmark_list], dtype=np.float32)
+        )
 
         #: Invoking interpreter for prediction
         self.interpreter.invoke()

@@ -1,0 +1,11 @@
+Flask==2.3.2
+matplotlib==3.7.1
+mediapipe==0.10.0
+numpy==1.23.5
+opencv-python==4.7.0.72
+pandas==2.0.1
+Pillow==9.5.0
+python-dotenv==1.0.0
+scikit-learn==1.2.2
+seaborn==0.12.2
+tensorflow==2.12.0
