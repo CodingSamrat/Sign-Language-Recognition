@@ -74,7 +74,7 @@ def main():
     with open(keypoint_labels_file, encoding="utf-8-sig") as f:
         key_points = csv.reader(f)
         keypoint_classifier_labels = [row[0] for row in key_points]
-
+    print(3)
     #: -
     #: FPS Measurement
     cv_fps = CvFpsCalc(buffer_len=10)
@@ -84,7 +84,7 @@ def main():
     while True:
         #: FPS of open cv frame or window
         fps = cv_fps.get()
-
+        print(4)
         #: -
         #: Setup Quit key for program
         key = cv.waitKey(10)
