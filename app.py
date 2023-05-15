@@ -10,28 +10,33 @@ from dotenv import load_dotenv
 from utils import get_args
 from utils import CvFpsCalc
 from utils import get_result_image
+from utils import get_fps_log_image
 from utils import get_mode
 
 from utils import draw_landmarks
 from utils import draw_bounding_rect
 from utils import draw_hand_label
-from utils import show_info
+from utils import show_fps_log
 from utils import show_result
 
 from utils import calc_bounding_rect
 from utils import calc_landmark_list
 from utils import pre_process_landmark
 from utils import log_keypoints
+from utils import get_dict_form_list
 
 from model import KeyPointClassifier
 
-load_dotenv()
 
 
 def main():
     #: -
     #: Getting all arguments
+    load_dotenv()
     args = get_args()
+
+    keypoint_file = "model/keypoint.csv"
+    counter_obj = get_dict_form_list(keypoint_file)
 
     #: cv Capture
     CAP_DEVICE = args.device
@@ -54,6 +59,10 @@ def main():
     cap = cv.VideoCapture(CAP_DEVICE)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, CAP_WIDTH)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, CAP_HEIGHT)
+
+    #: Background Image
+    background_image = cv.imread("resources/background.png")
+    # result_image = cv.imread("resources/result.png")
 
     #: -
     #: Setup hands
@@ -93,14 +102,15 @@ def main():
 
         #: -
         #: Camera capture
-        ret, image = cap.read()
-        if not ret:
-            break
+        success, image = cap.read()
+        if not success:
+            continue
 
         #: Flip Image for mirror display
         image = cv.flip(image, 1)
         debug_image = copy.deepcopy(image)
         result_image = get_result_image()
+        fps_log_image = get_fps_log_image()
 
         #: Converting to RBG from BGR
         image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
@@ -109,11 +119,13 @@ def main():
         results = hands.process(image)  #: Hand's landmarks
         image.flags.writeable = True
 
+        
+        
         #: -
         #: DEBUG - Showing Debug info
         if DEBUG:
             MODE = get_mode(key, MODE)
-            debug_image = show_info(debug_image, fps, MODE)
+            fps_log_image = show_fps_log(fps_log_image, fps, "Limit reached = ")
 
         #: -
         #: Start Detection
@@ -144,17 +156,25 @@ def main():
                     result_image = show_result(result_image, handedness, hand_sign_text)
 
                 elif MODE == 1:  #: Logging Mode
-                    log_keypoints(key, pre_processed_landmark_list)
+                    log_keypoints(key, pre_processed_landmark_list, counter_obj, data_limit=256)
 
                 #: -
                 #: Drawing debug info
                 debug_image = draw_bounding_rect(debug_image, use_brect, brect)
                 debug_image = draw_landmarks(debug_image, landmark_list)
                 debug_image = draw_hand_label(debug_image, brect, handedness)
+                
+        #: -
+        #: Set main video footage on Background
+        background_image[170:170+480, 50:50+640] = debug_image
+        background_image[123:123+382, 731:731+299] = result_image
+        background_image[678:678+30, 118:118+640] = fps_log_image
 
-        cv.imshow("Left", result_image)
+        # cv.imshow("Result", result_image)
+        # cv.imshow("Main Frame", debug_image)
+        cv.imshow("Sign Language Recognition", background_image)
 
-        cv.imshow("Sing Language Recognition", debug_image)
+
 
     cap.release()
     cv.destroyAllWindows()

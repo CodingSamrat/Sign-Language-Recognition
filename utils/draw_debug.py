@@ -51,12 +51,12 @@ def draw_hand_label(image, brect, handedness):
 
 
 def get_result_image():
-    image = np.ones([200, 400, 3], dtype=np.uint8) * 255
+    image = np.ones([382, 299, 3], dtype=np.uint8) * 255
+    return image
 
-    #: Heading
-    cv.putText(image, "Left", (10, 30), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1, cv.LINE_AA)
-    cv.putText(image, "Right", (210, 30), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 1, cv.LINE_AA)
 
+def get_fps_log_image():
+    image = np.ones([30, 640, 3], dtype=np.uint8) * 255
     return image
 
 
@@ -77,40 +77,31 @@ def show_result(image, handedness, hand_sign_text):
     #: Checking for right hand or left
     if hand_sign_text != "":
         if hand == "Right":
-            position = (210, 110)
+            position = (160, 80)
         elif hand == "Left":
-            position = (10, 110)
+            position = (10, 80)
 
         cv.putText(image, hand_sign_text, position, cv.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 6, cv.LINE_AA)
 
     return image
 
 
-def show_info(image, fps, mode):
+def show_fps_log(image, fps, log=""):
     """
 
     :param image: Debug image
     :param fps: FPS
-    :param mode: Mode
+    :param log: log to print
     :return: Debug image
     """
-
+    # 116 / 674
     #: -
     #: FPS Functionality
-    cv.putText(image, "FPS: " + str(fps), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0), 4, cv.LINE_AA)
-    cv.putText(image, "FPS: " + str(fps), (10, 30), cv.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2, cv.LINE_AA)
+    cv.putText(image, str(fps), (0, 22), cv.FONT_HERSHEY_SIMPLEX, 0.70, (0, 0, 0), 1, cv.LINE_AA)
 
-    #: -
-    #: Mode Functionality
-    mode_text = ""
-    if mode == 0:  #: Normal Mode
-        mode_text = "Prediction"
-    elif mode == 1:  #: Logging Mode
-        mode_text = "Logging"
-
-    # if mode_text != "":
-    cv.putText(image, "MODE: " + str(mode_text), (10, 65), cv.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0), 4, cv.LINE_AA)
-    cv.putText(image, "MODE: " + str(mode_text), (10, 65), cv.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2, cv.LINE_AA)
+    #: FPS Functionality
+    if log != "":
+        cv.putText(image, log, (90, 22), cv.FONT_HERSHEY_SIMPLEX, 0.60, (0, 0, 0), 1, cv.LINE_AA)
 
     return image
 

@@ -1,23 +1,26 @@
 import csv
 import cv2 as cv
 import json
+import numpy as np
 
 
-def log_keypoints(key, landmark_list, data_limit=1000):
+def log_keypoints(key, landmark_list, counter_obj, data_limit=1000):
     """
 
     :param key: Keyboard key (latter)
     :param landmark_list: Preprocessed landmark list
+    :param counter_obj:
     :param data_limit: How many row need for each sign
     :return: None
     """
     counter_file = "model/counter.json"
-    counter_obj = {}
+
+    _dict = {}
     csv_path = "model/keypoint.csv"
     index = -1
 
-    with open(counter_file, "r") as cf:
-        counter_obj = dict(json.load(cf))
+    # counter_obj = _get_dict_form_list(csv_path)
+    counter_obj = counter_obj
 
     #: Escaping 'J/j'
     if key == 106 or key == 74:
@@ -66,6 +69,24 @@ def log_keypoints(key, landmark_list, data_limit=1000):
         print(f"{chr(key).upper()} => {counter_obj[str(index)]}/{data_limit}")
 
     return
+
+
+def get_dict_form_list(file):
+    _list = []
+    with open(file) as f:
+        for row in f:
+            _list.append(row.split(",")[0])
+
+    if len(_list)==0:
+        return {}
+
+    obj = {}
+    set_list = set(_list)
+
+    for i in set_list:
+        obj[str(i)] = _list.count(i)
+
+    return obj
 
 
 def _get_alphabet_index(key):

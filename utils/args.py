@@ -15,7 +15,7 @@ def get_args():
     parser.add_argument(
         "--width",
         type=int,
-        default=960,
+        default=640,
         help="width of image frame"
     )
 
@@ -23,7 +23,7 @@ def get_args():
     parser.add_argument(
         "--height",
         type=int,
-        default=960,
+        default=480,
         help="height of image frame"
     )
 

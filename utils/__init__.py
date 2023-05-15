@@ -10,8 +10,10 @@ from utils.draw_debug import draw_bounding_rect
 from utils.draw_debug import draw_hand_label
 from utils.draw_debug import show_result
 from utils.draw_debug import get_result_image
-from utils.draw_debug import show_info
+from utils.draw_debug import get_fps_log_image
+from utils.draw_debug import show_fps_log
 
 from utils.logging import log_keypoints
 from utils.logging import get_mode
+from utils.logging import get_dict_form_list
 

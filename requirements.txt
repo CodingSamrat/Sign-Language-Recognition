@@ -1,8 +1,7 @@
-Flask==2.3.2
 matplotlib==3.7.1
 mediapipe==0.10.0
 numpy==1.24.3
-opencv-python==4.7.0.72
+opencv-python==4.6.0.66
 pandas==2.0.1
 Pillow==9.5.0
 python-dotenv==1.0.0
