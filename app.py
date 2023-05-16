@@ -53,7 +53,7 @@ def main():
     USE_BRECT = args.use_brect
     MODE = args.mode
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
-    CAP_DEVICE = 0
+    CAP_DEVICE = 1
     #: -
     #: Capturing image
     cap = cv.VideoCapture(CAP_DEVICE)
@@ -156,7 +156,7 @@ def main():
                     result_image = show_result(result_image, handedness, hand_sign_text)
 
                 elif MODE == 1:  #: Logging Mode
-                    log_keypoints(key, pre_processed_landmark_list, counter_obj, data_limit=256)
+                    log_keypoints(key, pre_processed_landmark_list, counter_obj, data_limit=500)
 
                 #: -
                 #: Drawing debug info
