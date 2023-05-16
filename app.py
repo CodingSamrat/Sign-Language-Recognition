@@ -96,7 +96,7 @@ def main():
 
         #: -
         #: Setup Quit key for program
-        key = cv.waitKey(10)
+        key = cv.waitKey(1)
         if key == 27:   # ESC key
             break
 
@@ -125,7 +125,7 @@ def main():
         #: DEBUG - Showing Debug info
         if DEBUG:
             MODE = get_mode(key, MODE)
-            fps_log_image = show_fps_log(fps_log_image, fps, "Limit reached = ")
+            fps_log_image = show_fps_log(fps_log_image, fps)
 
         #: -
         #: Start Detection
