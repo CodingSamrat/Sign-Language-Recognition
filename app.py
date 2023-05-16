@@ -53,7 +53,7 @@ def main():
     USE_BRECT = args.use_brect
     MODE = args.mode
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
-    CAP_DEVICE = 1
+    CAP_DEVICE = 0
     #: -
     #: Capturing image
     cap = cv.VideoCapture(CAP_DEVICE)
