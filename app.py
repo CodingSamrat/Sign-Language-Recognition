@@ -156,7 +156,7 @@ def main():
                     result_image = show_result(result_image, handedness, hand_sign_text)
 
                 elif MODE == 1:  #: Logging Mode
-                    log_keypoints(key, pre_processed_landmark_list, counter_obj, data_limit=500)
+                    log_keypoints(key, pre_processed_landmark_list, counter_obj, data_limit=1000)
 
                 #: -
                 #: Drawing debug info
