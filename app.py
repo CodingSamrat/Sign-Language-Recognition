@@ -1,3 +1,4 @@
+print("[INFO] System initializing")
 import copy
 import csv
 import os
@@ -7,8 +8,8 @@ import mediapipe as mp
 
 from dotenv import load_dotenv
 
-from utils import get_args
 from utils import CvFpsCalc
+from utils import get_args
 from utils import get_result_image
 from utils import get_fps_log_image
 from utils import get_mode
@@ -30,6 +31,7 @@ from model import KeyPointClassifier
 
 
 def main():
+    
     #: -
     #: Getting all arguments
     load_dotenv()
@@ -54,6 +56,9 @@ def main():
     MODE = args.mode
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
     CAP_DEVICE = 0
+    
+    print("[INFO] System initialization Successfull")
+    print("[INFO] Opening Camera")
     #: -
     #: Capturing image
     cap = cv.VideoCapture(CAP_DEVICE)
@@ -87,7 +92,7 @@ def main():
     #: -
     #: FPS Measurement
     cv_fps = CvFpsCalc(buffer_len=10)
-
+    print("[INFO] System is up & running")
     #: -
     #: Main Loop Start Here...
     while True:
