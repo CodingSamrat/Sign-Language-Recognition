@@ -37,7 +37,7 @@ def get_args():
     parser.add_argument(
         "--max_num_hands",
         type=int,
-        default=2,
+        default=1,
         help="Number of hands to detect"
     )
 
