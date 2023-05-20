@@ -34,11 +34,16 @@ class KeyPointClassifier(object):
 
         #: Getting tensor index from output details
         output_details_tensor_index = self.output_details[0]['index']
+        # print(output_details_tensor_index)
 
         #: Getting all the prediction percentage
         result = self.interpreter.get_tensor(output_details_tensor_index)
-
-        #: Getting index of maximum accurate label
-        result_index = np.argmax(np.squeeze(result))
-
-        return result_index
+        
+        if max(np.squeeze(result)) > 0.5:
+            #: Getting index of maximum accurate label
+            result_index = np.argmax(np.squeeze(result))
+            
+            return result_index
+        else:
+            return 25
+            
