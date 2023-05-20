@@ -51,7 +51,7 @@ def draw_hand_label(image, brect, handedness):
 
 
 def get_result_image():
-    image = np.ones([382, 299, 3], dtype=np.uint8) * 255
+    image = np.ones([127, 299, 3], dtype=np.uint8) * 255
     return image
 
 
@@ -77,11 +77,15 @@ def show_result(image, handedness, hand_sign_text):
     #: Checking for right hand or left
     if hand_sign_text != "":
         if hand == "Right":
-            position = (160, 80)
+            position = (10, 80)
+            cv.putText(image, hand_sign_text, position, cv.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 6, cv.LINE_AA)
+            
         elif hand == "Left":
             position = (10, 80)
+            hand_sign_text = "Wrong Hand"
+            cv.putText(image, hand_sign_text, position, cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+            
 
-        cv.putText(image, hand_sign_text, position, cv.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 0), 6, cv.LINE_AA)
 
     return image
 

@@ -155,7 +155,12 @@ def main():
                 if MODE == 0:  #: Prediction Mode / Normal mode
                     #: Hand sign classification
                     hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
-                    hand_sign_text = keypoint_classifier_labels[hand_sign_id]
+                    
+                    if hand_sign_id == 25:
+                        hand_sign_text = ""
+                    else:
+                        hand_sign_text = keypoint_classifier_labels[hand_sign_id]
+                        
 
                     #: Showing Result
                     result_image = show_result(result_image, handedness, hand_sign_text)
@@ -172,7 +177,7 @@ def main():
         #: -
         #: Set main video footage on Background
         background_image[170:170+480, 50:50+640] = debug_image
-        background_image[123:123+382, 731:731+299] = result_image
+        background_image[240:240+127, 731:731+299] = result_image
         background_image[678:678+30, 118:118+640] = fps_log_image
 
         # cv.imshow("Result", result_image)
