@@ -2,7 +2,9 @@ print("[INFO] System initializing")
 import copy
 import csv
 import os
+import datetime
 
+import pyautogui
 import cv2 as cv
 import mediapipe as mp
 
@@ -104,6 +106,10 @@ def main():
         key = cv.waitKey(1)
         if key == 27:   # ESC key
             break
+        elif key == 57:  # 9
+            name = datetime.datetime.now().strftime("%m%d%Y-%H%M%S")
+            myScreenshot = pyautogui.screenshot()
+            myScreenshot.save(f'ss/{name}.png')
 
         #: -
         #: Camera capture
