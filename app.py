@@ -59,7 +59,7 @@ def main():
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
     CAP_DEVICE = 0
     
-    print("INFO: System initialization Successfull")
+    print("INFO: System initialization Successful")
     print("INFO: Opening Camera")
     #: -
     #: Capturing image
@@ -183,9 +183,22 @@ def main():
                 
         #: -
         #: Set main video footage on Background
-        background_image[170:170+480, 50:50+640] = debug_image
-        background_image[240:240+127, 731:731+299] = result_image
-        background_image[678:678+30, 118:118+640] = fps_log_image
+
+        if MODE == 0:  #: Prediction Mode / Normal mode
+
+            #: Changing to Prediction Background and setting main video footage on Background 
+            background_image = cv.imread("resources/background_prediction.png")
+            background_image[170:170+480, 50:50+640] = debug_image
+            background_image[240:240+127, 731:731+299] = result_image
+            background_image[678:678+30, 118:118+640] = fps_log_image
+
+        elif MODE == 1:  #: Logging Mode
+
+            #: Changing to Logging Background and setting main video footage on Background
+            background_image = cv.imread("resources/background_logging.png")
+            background_image[170:170+480, 50:50+640] = debug_image
+            background_image[240:240+127, 731:731+299] = result_image
+            background_image[678:678+30, 118:118+640] = fps_log_image
 
         # cv.imshow("Result", result_image)
         # cv.imshow("Main Frame", debug_image)
