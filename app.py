@@ -1,4 +1,4 @@
-print("[INFO] System initializing")
+print("INFO: Initializing System")
 import copy
 import csv
 import os
@@ -57,10 +57,10 @@ def main():
     USE_BRECT = args.use_brect
     MODE = args.mode
     DEBUG = int(os.environ.get("DEBUG", "0")) == 1
-    CAP_DEVICE = 1
+    CAP_DEVICE = 0
     
-    print("[INFO] System initialization Successfull")
-    print("[INFO] Opening Camera")
+    print("INFO: System initialization Successfull")
+    print("INFO: Opening Camera")
     #: -
     #: Capturing image
     cap = cv.VideoCapture(CAP_DEVICE)
@@ -94,7 +94,7 @@ def main():
     #: -
     #: FPS Measurement
     cv_fps = CvFpsCalc(buffer_len=10)
-    print("[INFO] System is up & running")
+    print("INFO: System is up & running")
     #: -
     #: Main Loop Start Here...
     while True:
@@ -105,6 +105,7 @@ def main():
         #: Setup Quit key for program
         key = cv.waitKey(1)
         if key == 27:   # ESC key
+            print("INFO: Exiting...")
             break
         elif key == 57:  # 9
             name = datetime.datetime.now().strftime("%m%d%Y-%H%M%S")
@@ -195,6 +196,7 @@ def main():
     cap.release()
     cv.destroyAllWindows()
 
+    print("INFO: Bye")
 
 
 if __name__ == "__main__":
