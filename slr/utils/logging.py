@@ -48,25 +48,24 @@ def log_keypoints(key, landmark_list, counter_obj, data_limit=1000):
             counter_obj[str(index)] += 1
         else:
             counter_obj[str(index)] = 1
-
+            
+        #: -
+        #: Writing counter
         if counter_obj[str(index)] > data_limit:  #: Limit of capturing image
             print(f"Dataset limit reached for {chr(key).upper()} [{counter_obj[str(index)]-1}/{data_limit}]")
             return
+        else:
+            with open(counter_file, "w") as cf:
+                counter_obj_writable = json.dumps(counter_obj, indent=4)
+                cf.write(counter_obj_writable)
+
+            print(f"{chr(key).upper()} => {counter_obj[str(index)]}/{data_limit}")
 
         #: -
         #: Writing dataset
         with open(csv_path, 'a', newline="") as f:
             writer = csv.writer(f)
             writer.writerow([index, *landmark_list])
-
-
-        #: -
-        #: Writing counter
-        with open(counter_file, "w") as cf:
-            counter_obj_writable = json.dumps(counter_obj, indent=4)
-            cf.write(counter_obj_writable)
-
-        print(f"{chr(key).upper()} => {counter_obj[str(index)]}/{data_limit}")
 
     return
 
