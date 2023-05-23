@@ -127,11 +127,9 @@ The collected data is preprocessed to enhance the quality, remove noise, and ext
 1. Getting the hand landmarks from the video stream.
 
 2. Converting the hand landmarks relative to the `wrist` landmark's coordinate `(0, 0)`. This is done by subtracting the `wrist` landmark's coordinate from all the other landmarks.
- 
-<d>
-    <img  alt="Coding" width="45%" src="docs/hand_landmarks_o.jpg">
-    <img  alt="Coding" width="45%" src="docs/hand_landmarks_r.jpg">
-</d>
+
+   ![Hand Landmarks](docs/hand_landmarks_o_r.png)
+
 
 3. Flatten the normalized hand landmarks to a 1 Dimensional list.
 
