@@ -1,5 +1,5 @@
-from main import main
+from slr import main
 
 
 if __name__ == "__main__":
-    main() 
+    main()
