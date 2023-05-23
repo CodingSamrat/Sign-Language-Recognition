@@ -95,7 +95,7 @@ def pre_process_landmark(landmark_list) -> List:
     #: Convert into a one-dimensional list
     temp_landmark_list = list(itertools.chain.from_iterable(temp_landmark_list))
 
-    #: Normalization (0 - 1)
+    #: Normalization (-1 to 1)
     max_value = max(list(map(abs, temp_landmark_list)))
 
     def normalize_(n):
